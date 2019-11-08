@@ -62,7 +62,7 @@ class BaseStyleguideNode(template.Node):
 
         for section in sections:
             context.update({'section': section})
-            html = render_to_string(template_name, context)
+            html = render_to_string(template_name, context.flatten())
             output.append(html)
             context.pop()
 
