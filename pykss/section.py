@@ -64,8 +64,15 @@ class Section(object):
                 in_modifiers = False
                 self._description_lines.append(line)
 
-        self._description = '\n'.join(self._description_lines).strip()
+        self._heading = self._description_lines[0] if len(self._description_lines) > 0 else ''
+        self._description = '\n'.join(self._description_lines[1:]).strip()
         self.add_example('\n'.join(self._example_lines).strip())
+
+    @property
+    def heading(self):
+        if not hasattr(self, '_heading'):
+            self.parse()
+        return self._heading
 
     @property
     def description(self):

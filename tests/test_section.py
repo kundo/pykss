@@ -26,9 +26,12 @@ Styleguide 2.1.1.
         """
         self.section = Section(comment.strip(), 'example.css')
 
+    def test_parses_the_heading(self):
+        self.assertEqual(self.section.heading, '# Form Button')
+
     def test_parses_the_description(self):
         self.assertEqual(self.section.description,
-                         ('# Form Button\n\nYour standard form button.\n\n\n'
+                         ('Your standard form button.\n\n\n'
                           '    This is part of the description, '
                           'not a multiline modifier.'))
 
