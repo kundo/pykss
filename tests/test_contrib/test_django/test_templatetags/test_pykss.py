@@ -23,7 +23,7 @@ class StyleguideBlockTestCase(TestCase):
             {% endstyleguideblock %}
         """)
         context = Context({'styleguide': self.styleguide})
-        self.assertEquals(template.render(context).strip(), '')
+        self.assertEqual(template.render(context).strip(), '')
 
     @patch('pykss.contrib.django.templatetags.pykss.render_to_string')
     def test_uses_default_template(self, mock_render_to_string):

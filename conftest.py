@@ -21,6 +21,15 @@ def pytest_configure(config):
             PROJECT_ROOT=PROJECT_ROOT,
             TEMPLATE_DEBUG=True,
             TEMPLATE_DIRS=[os.path.join(PROJECT_ROOT, 'tests', 'templates')],
+            TEMPLATES=[
+                {
+                    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                    'DIRS': [os.path.join(PROJECT_ROOT, 'tests', 'templates')],
+                    'APP_DIRS': True,
+                    'OPTIONS': {
+                    },
+                },
+            ]
         )
 
         if hasattr(django, 'setup'):

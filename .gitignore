@@ -3,3 +3,7 @@
 *.tox
 __pycache__
 dist
+.cache
+.idea
+.python-version
+*.xml
