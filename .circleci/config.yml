@@ -1,0 +1,71 @@
+version: 1
+
+defaults:
+  python_cache: &python_cache
+    key: v1-pykss-{{ .Branch }}-{{ checksum "setup.py" }}
+    paths:
+      - ~/pykss/.tox
+
+jobs:
+  build_and_test:
+    docker:
+      - image: n42org/tox
+        user: root
+        command: ["/bin/bash"]
+
+    working_directory: ~/pykss
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          name: Restore python cache
+          <<: *python_cache
+
+      - name: Run tests
+        type: shell
+        command: tox
+
+      - save_cache:
+          name: Save python cache
+          <<: *python_cache
+
+      - store_test_results:
+          name: Collect test reports
+          path: reports
+
+      - store_artifacts:
+          name: Store test artifacts
+          path: reports
+
+  release:
+    docker:
+      - image: circleci/python:3.6
+        user: root
+        command: ["/bin/bash"]
+
+    working_directory: ~/pykss
+
+    steps:
+      - checkout
+
+      - name: Build release
+        type: shell
+        command: python setup.py sdist
+
+      - name: Push release to GemFury
+        type: shell
+        command: curl -F package=@dist/pykss-$(python setup.py --version).tar.gz https://$GEMFURY_TOKEN@push.fury.io/kundo-team-account/
+
+workflows:
+  version: 2
+  build_test_and_release:
+    jobs:
+      - build_and_test
+      - release:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build_and_test
