@@ -27,7 +27,8 @@ setup(
             'Django>=1.6',
             'flake8',
             'mock',
-            'pytest',
+            'pytest<=3.3',
+            'attrs==19.1.0',
         ],
     },
 )
